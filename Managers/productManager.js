@@ -7,7 +7,7 @@ class ProductManager{
     }
 
     addProduct(product){
-        console.log("addProduct()");
+        //console.log("addProduct()");
         try {
             let products = this.getAll();
             products.push(product);
@@ -17,13 +17,22 @@ class ProductManager{
         }
     }
 
-    getProductById(){
-        console.log("getProducts()");
+    getProductById(id){
+        try {
+            //console.log("get id " + id);
+            const products = this.getAll();
+            //console.log(products);
+            const product = products.find((p) => p.id === Number(id));
+            if(!product) throw new Error("Product with ID not found");
+            return product;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     getAll(){
         if (!fs.existsSync(this.path)) return [];
-        console.log("getAll()");
+        //console.log("getAll()");
         try {
             const content = fs.readFileSync(this.path, 'utf-8');
             //console.log(content)

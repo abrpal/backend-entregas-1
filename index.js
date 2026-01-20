@@ -14,6 +14,39 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+
+
+
+app.get('/api/products', (req, res) => {
+    
+     try {
+        let products = productManager.getAll();
+        res.status(200).send(JSON.stringify(products));
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
+});
+
+
+app.get('/api/products/:pid', (req, res) => {
+    
+     try {
+        let {pid} = req.params;
+        let product = productManager.getProductById(pid);
+        
+        res.status(200).send(JSON.stringify(product));
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
+});
+
+
+
+
+
+
 app.post("/api/products", (req, res) => {
     
     try {
@@ -28,16 +61,7 @@ app.post("/api/products", (req, res) => {
 });
 
 
-app.get('/api/products', (req, res) => {
-    
-     try {
-        let products = productManager.getAll();
-        res.status(200).send(JSON.stringify(products));
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send();
-    }
-});
+
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
