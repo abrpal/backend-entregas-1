@@ -14,13 +14,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.post("/", (req, res) => {
+app.post("/api/products", (req, res) => {
     
     try {
-        const product = { id: Math.floor(Math.random() * 1000), ...req.body};
-
+        let products = productManager.getAll();
+        const product = { id: products.length + 1, ...req.body};
         productManager.addProduct(product);
-        
         res.status(200).send(JSON.stringify(product));
     } catch (error) {
         console.log(error.message);
@@ -31,7 +30,13 @@ app.post("/", (req, res) => {
 
 app.get('/api/products', (req, res) => {
     
-    //res.status(200).json(productos);
+     try {
+        let products = productManager.getAll();
+        res.status(200).send(JSON.stringify(products));
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
 });
 
 app.listen(port, () => {

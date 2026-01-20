@@ -17,7 +17,7 @@ class ProductManager{
         }
     }
 
-    getProducts(){
+    getProductById(){
         console.log("getProducts()");
     }
 
@@ -25,8 +25,15 @@ class ProductManager{
         if (!fs.existsSync(this.path)) return [];
         console.log("getAll()");
         try {
-            const content = fs.readFileSync(this.path);
-            return JSON.parse(content);
+            const content = fs.readFileSync(this.path, 'utf-8');
+            //console.log(content)
+            
+            if(content && content.trim().length > 0){
+                return JSON.parse(content);
+            }
+
+            return [];
+
         } catch (error) {
             console.log("error en getAll()", error);
         }

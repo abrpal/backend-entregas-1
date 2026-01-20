@@ -1,3 +1,1 @@
-{
-    "probando":123
-}
+[{"id":1,"title":"jabon","description":"Jabon para trastes","code":"JAB01","price":123,"status":true,"stcok":50,"category":"Limpieza","thumbnails":["ruta1","ruta2","ruta3"]},{"id":2,"title":"jabon","description":"Jabon para trastes","code":"JAB01","price":123,"status":true,"stcok":50,"category":"Limpieza","thumbnails":["ruta1","ruta2","ruta3"]},{"id":3,"title":"jabon","description":"Jabon para trastes","code":"JAB01","price":123,"status":true,"stcok":50,"category":"Limpieza","thumbnails":["ruta1","ruta2","ruta3"]},{"id":4,"title":"jabon","description":"Jabon para trastes","code":"JAB01","price":123,"status":true,"stcok":50,"category":"Limpieza","thumbnails":["ruta1","ruta2","ruta3"]}]
