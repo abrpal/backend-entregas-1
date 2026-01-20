@@ -6,6 +6,7 @@ necesarios para gestionar los productos y carritos de compra para tu API.
 
 import express from 'express';
 import { productManager } from "./Managers/productManager.js";
+import { cartManager } from './Managers/cartManager.js'; 
 
 const port = 8080;
 
@@ -51,7 +52,8 @@ app.post("/api/products", (req, res) => {
     
     try {
         let products = productManager.getAll();
-        const product = { id: Number(products[products.length-1].id + 1), ...req.body};
+        const id = (products.length > 0 ) ? Number(products[products.length-1].id + 1) : 1;
+        const product = { id: id, ...req.body};
         productManager.addProduct(product);
         res.status(200).send(JSON.stringify(product));
     } catch (error) {
@@ -93,7 +95,8 @@ app.delete('/api/products/:pid', (req, res) => {
 
 app.post('/api/carts/', (req, res) => {
     try {
-        res.status(200).send("post cart");
+        const cart = cartManager.addCart(req.body);
+        res.status(200).send(JSON.stringify(cart));
     } catch (error) {
         console.log(error.message);
         res.status(500).send();
@@ -102,7 +105,8 @@ app.post('/api/carts/', (req, res) => {
 
 app.get('/api/carts/:cid', (req, res) => {
     try {
-        res.status(200).send(" get cid");
+        let cart = cartManager.getCartByID(Number(req.params.cid));
+        res.status(200).send(JSON.stringify(cart));
     } catch (error) {
         console.log(error.message);
         res.status(500).send();
@@ -111,7 +115,8 @@ app.get('/api/carts/:cid', (req, res) => {
 
 app.post('/api/carts/:cid/product/:pid', (req, res) => {
     try {
-        res.status(200).send("post pid to cid");
+        const cart = cartManager.addProductToCart(Number(req.params.cid), Number(req.params.pid));
+        res.status(200).send(JSON.stringify(cart));
     } catch (error) {
         console.log(error.message);
         res.status(500).send();
