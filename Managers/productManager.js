@@ -1,3 +1,4 @@
+import { log } from 'console';
 import fs from 'fs';
 
 
@@ -23,7 +24,7 @@ class ProductManager{
             const products = this.getAll();
             //console.log(products);
             const product = products.find((p) => p.id === Number(id));
-            if(!product) throw new Error("Product with ID not found");
+            if(!product) throw new Error("Product ID not found");
             return product;
         } catch (error) {
             console.log(error);
@@ -52,9 +53,31 @@ class ProductManager{
         try {
             const products = this.getAll();
             const index = products.findIndex((p) => p.id === Number(id));
-            products[index] = {id, ...body};
+            if(index === null) throw new Error("Product ID not found");
+            //console.log(body);
+            products[index] = { id , ...body};
+            //console.log(products);
+            fs.writeFileSync(this.path, "");
             fs.writeFileSync(this.path, JSON.stringify(products));
-            //console.log(products[index]);
+            
+            return products[index];
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    deleteProduct(id){
+        try {
+            const products = this.getAll();
+            const index = products.findIndex((p) => p.id === Number(id));
+            console.log("index at: ", index);
+            if(index === null) throw new Error("Product ID not found");
+            
+            products.splice(index, 1);
+            console.log(products);
+            
+            fs.writeFileSync(this.path, "");
+            fs.writeFileSync(this.path, JSON.stringify(products));
             return products[index];
         } catch (error) {
             console.log(error);

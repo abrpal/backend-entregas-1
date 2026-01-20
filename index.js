@@ -59,8 +59,19 @@ app.post("/api/products", (req, res) => {
 
 app.put('/api/products/:pid', (req, res) => {
     try {
-        const product = productManager.updateProduct(req.params.pid, req.body);
+        const product = productManager.updateProduct(Number(req.params.pid), req.body);
         res.status(200).send(JSON.stringify(product));
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
+});
+
+
+app.delete('/api/products/:pid', (req, res) => {
+    try {
+        const deleted = productManager.deleteProduct(req.params.pid);
+        res.status(200).send(JSON.stringify(deleted));
     } catch (error) {
         console.log(error.message);
         res.status(500).send();
