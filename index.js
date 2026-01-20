@@ -15,7 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 
-
+/*
+----------------------------------------------------
+-------------------  PRODUCTS  ---------------------
+----------------------------------------------------
+*/
 
 app.get('/api/products', (req, res) => {
     
@@ -79,6 +83,40 @@ app.delete('/api/products/:pid', (req, res) => {
 });
 
 
+
+/*
+----------------------------------------------------
+--------------------  CARTS  -----------------------
+----------------------------------------------------
+*/
+
+
+app.post('/api/carts/', (req, res) => {
+    try {
+        res.status(200).send("post cart");
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
+});
+
+app.get('/api/carts/:cid', (req, res) => {
+    try {
+        res.status(200).send(" get cid");
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
+});
+
+app.post('/api/carts/:cid/product/:pid', (req, res) => {
+    try {
+        res.status(200).send("post pid to cid");
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
