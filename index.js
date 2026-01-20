@@ -47,7 +47,7 @@ app.post("/api/products", (req, res) => {
     
     try {
         let products = productManager.getAll();
-        const product = { id: products.length + 1, ...req.body};
+        const product = { id: Number(products[products.length-1].id + 1), ...req.body};
         productManager.addProduct(product);
         res.status(200).send(JSON.stringify(product));
     } catch (error) {

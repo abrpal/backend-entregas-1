@@ -15,6 +15,7 @@ class ProductManager{
             fs.writeFileSync(this.path, JSON.stringify(products));
         } catch (error) {
             console.log("error en addProduct()", error);
+            throw error;
         }
     }
 
@@ -28,6 +29,7 @@ class ProductManager{
             return product;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -46,6 +48,7 @@ class ProductManager{
 
         } catch (error) {
             console.log("error en getAll()", error);
+            throw error;
         }   
     }
 
@@ -53,16 +56,16 @@ class ProductManager{
         try {
             const products = this.getAll();
             const index = products.findIndex((p) => p.id === Number(id));
-            if(index === null) throw new Error("Product ID not found");
+            if(index === -1) throw new Error("Product ID not found");
             //console.log(body);
             products[index] = { id , ...body};
             //console.log(products);
-            fs.writeFileSync(this.path, "");
             fs.writeFileSync(this.path, JSON.stringify(products));
             
             return products[index];
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -70,17 +73,19 @@ class ProductManager{
         try {
             const products = this.getAll();
             const index = products.findIndex((p) => p.id === Number(id));
-            console.log("index at: ", index);
-            if(index === null) throw new Error("Product ID not found");
+            //console.log("index at: ", index);
+            if(index === -1) throw new Error("Product ID not found");
             
+            const deletedProd = products[index];
+
             products.splice(index, 1);
-            console.log(products);
-            
-            fs.writeFileSync(this.path, "");
+            //console.log(products);
+
             fs.writeFileSync(this.path, JSON.stringify(products));
-            return products[index];
+            return deletedProd;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 }
