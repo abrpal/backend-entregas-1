@@ -43,10 +43,6 @@ app.get('/api/products/:pid', (req, res) => {
 });
 
 
-
-
-
-
 app.post("/api/products", (req, res) => {
     
     try {
@@ -60,6 +56,16 @@ app.post("/api/products", (req, res) => {
     }
 });
 
+
+app.put('/api/products/:pid', (req, res) => {
+    try {
+        const product = productManager.updateProduct(req.params.pid, req.body);
+        res.status(200).send(JSON.stringify(product));
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send();
+    }
+});
 
 
 

@@ -45,8 +45,20 @@ class ProductManager{
 
         } catch (error) {
             console.log("error en getAll()", error);
+        }   
+    }
+
+    updateProduct(id, body){
+        try {
+            const products = this.getAll();
+            const index = products.findIndex((p) => p.id === Number(id));
+            products[index] = {id, ...body};
+            fs.writeFileSync(this.path, JSON.stringify(products));
+            //console.log(products[index]);
+            return products[index];
+        } catch (error) {
+            console.log(error);
         }
-        
     }
 }
 
