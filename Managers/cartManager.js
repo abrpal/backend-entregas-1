@@ -22,11 +22,11 @@ class CartManager{
         }
     }
 
-    addCart(body){
+    addCart(){
         try {
             let carts = this.getAllCarts();
             const id = (carts.length > 0 ) ? Number(carts[carts.length-1].id + 1) : 1;
-            const cart = { id: id, ...body};
+            const cart = { id: id, products: []};
             carts.push(cart);
             fs.writeFileSync(this.path, JSON.stringify(carts));
             return cart;
@@ -41,7 +41,7 @@ class CartManager{
             const carts = this.getAllCarts();
             const cart = carts.find((c) => c.id === Number(cid));
             if(!cart) throw new Error("Cart ID not found");
-            return cart;
+            return cart.products;
         } catch (error) {
             console.log(error.message);
             throw error;
@@ -51,15 +51,30 @@ class CartManager{
     addProductToCart(cid, pid){
         try {
             let carts = this.getAllCarts();
-            let cart = carts.find((c) => c.id === Number(cid));
-            if(!cart) throw new Error("Cart ID not found");
+            let cartIndex = carts.findIndex((c) => c.id === Number(cid));
+            if(cartIndex === -1) throw new Error("Cart ID not found");
 
-            const product = productManager.getProductById(pid);
+            const product = productManager.getProductById(pid); //make sure product exists in DB.
             if(!product) throw new Error("Product ID not found");
 
-            cart.products.push(String(product.id));
+            //buscar el pid en el array de products del cart.
+            let prodIndex = carts[cartIndex].products.findIndex((p) => p.id === Number(pid))
+            
+            
+            if(prodIndex === -1){
+                //product not in cart yet. add it.
+                carts[cartIndex].products.push({id: Number(pid), quantity: 1});
+            }else{
+                carts[cartIndex].products[prodIndex].quantity++;
+            }
+
+
+            //save updated/created product
             fs.writeFileSync(this.path, JSON.stringify(carts));
-            return cart;
+            
+            //return cart
+            return carts[cartIndex];
+
         } catch (error) {
             console.log(error.message);
             throw error;
